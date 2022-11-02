@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
-import { IsCpfExists } from 'src/utils/isCpfExists.validator';
+import { IsCpfIsValid } from 'src/utils/isCpfIsValid.validator';
 
 export class Driver {
   @IsNotEmpty()
@@ -13,7 +13,7 @@ export class Driver {
 
   @IsNotEmpty()
   @IsString()
-  @IsCpfExists() //Criar decorator pra validar se o cpf já está cadastrado
+  @IsCpfIsValid()
   cpf: string;
 
   @IsNotEmpty()

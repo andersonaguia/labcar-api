@@ -4,7 +4,7 @@ import { TransformResponseInterceptor } from './core/http/transform-response-int
 import { Database } from './database/drivers/drivers.database';
 import { DriverModule } from './driver/driver.module';
 import { CpfIsValid } from './utils/cpfIsValid';
-import { IsCpfExistConstraint } from './utils/isCpfExists.validator';
+import { IsCpfIsValidConstraint } from './utils/isCpfIsValid.validator';
 
 @Module({
   imports: [DriverModule],
@@ -19,7 +19,7 @@ import { IsCpfExistConstraint } from './utils/isCpfExists.validator';
       provide: APP_INTERCEPTOR,
       useClass: TransformResponseInterceptor,
     },
-    IsCpfExistConstraint,
+    IsCpfIsValidConstraint,
     CpfIsValid,
   ],
 })

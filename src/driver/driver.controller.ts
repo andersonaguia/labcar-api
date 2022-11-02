@@ -1,5 +1,13 @@
 import { NestResponse } from './../core/http/nest-response';
-import { Body, Controller, HttpStatus, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpStatus,
+  Get,
+  Post,
+  Query,
+  Param,
+} from '@nestjs/common';
 import { NestResponseBuilder } from 'src/core/http/nest-response-builder';
 import { Driver } from './driver.entity';
 import { DriverService } from './driver.service';
@@ -9,8 +17,22 @@ export class DriverController {
   constructor(private service: DriverService) {}
 
   @Get()
-  public async findDrivers(@Query('page') page = 1, @Query('size') size = 10) {
-    return await this.service.findDrivers(page, size);
+  public async findDrivers(
+    @Query('page') page = 1,
+    @Query('size') size = 10,
+    @Query('name') name,
+  ) {
+    return await this.service.findDrivers(page, size, name);
+  }
+
+  @Get(':cpf')
+  public async getDriverByCpf(@Param('cpf') cpf: string): Promise<NestResponse> {
+    const driver = await this.service.searchByCpf(cpf);
+    return new NestResponseBuilder()
+      .withStatus(HttpStatus.OK)
+      .withHeaders({ Location: `drivers/${driver.cpf}` })
+      .withBody(driver)
+      .build();
   }
 
   @Post()

@@ -10,7 +10,7 @@ import { CpfIsValid } from './cpfIsValid';
 
 @Injectable()
 @ValidatorConstraint()
-export class IsCpfExistConstraint implements ValidatorConstraintInterface {
+export class IsCpfIsValidConstraint implements ValidatorConstraintInterface {
   constructor(private cpfService: CpfIsValid) {}
 
   validate(
@@ -25,13 +25,13 @@ export class IsCpfExistConstraint implements ValidatorConstraintInterface {
   }
 }
 
-export function IsCpfExists(validationOptions?: ValidationOptions) {
+export function IsCpfIsValid(validationOptions?: ValidationOptions) {
   return function (object: any, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: IsCpfExistConstraint,
+      validator: IsCpfIsValidConstraint,
     });
   };
 }

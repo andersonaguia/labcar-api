@@ -5,5 +5,5 @@ export class NestResponse {
 
   constructor(response: NestResponse) {
     Object.assign(this, response);
-  }
+  }  
 }

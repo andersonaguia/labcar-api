@@ -1,7 +1,11 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Database } from 'src/database/drivers/drivers.database';
 import { Driver } from './driver.entity';
-
 
 @Injectable()
 export class DriverService {
@@ -20,10 +24,32 @@ export class DriverService {
     return driver;
   }
 
-  public async findDrivers(page, size) {
+  public async searchByCpf(cpf: string): Promise<Driver> {
+    const drivers = await this.database.getDrivers();
+    const driver = drivers.find((driver) => driver.cpf === cpf);
+    if (driver) {
+      return driver;
+    } else {
+      throw new NotFoundException({
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'Driver is not found',
+      });
+    }
+  }
+
+  public async findDrivers(page, size, name) {
     const startPage = page < 1 ? 1 : page;
     const sizePage = size < 0 ? 1 : size;
+    const driverName = name || '';
     const drivers = await this.database.getDrivers();
+
+    if (driverName) {
+      const driverSearch = drivers.filter((driver) =>
+        driver.nome.toUpperCase().includes(driverName.toUpperCase()),
+      );
+      return driverSearch;
+    }
+
     return drivers.slice((startPage - 1) * sizePage, startPage * sizePage);
   }
 }
