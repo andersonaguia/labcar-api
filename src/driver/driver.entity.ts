@@ -2,6 +2,7 @@ import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { IsCpfIsValid } from 'src/utils/isCpfIsValid.validator';
 import { IsLegalAge } from 'src/utils/isLegalAge.validator';
 
+
 export class Driver {
   @IsNotEmpty()
   @IsString()

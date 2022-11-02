@@ -12,16 +12,20 @@ export class DriverService {
   constructor(private database: Database) {}
 
   public async createDriver(driver: Driver): Promise<Driver> {
+    const driverToCreate = driver;
     const allDrivers = await this.database.getDrivers();
-    const driverExist = allDrivers.find((drv) => drv.cpf === driver.cpf);
+    const driverExist = allDrivers.find(
+      (drv) => drv.cpf === driverToCreate.cpf,
+    );
     if (driverExist) {
       throw new ConflictException({
         statusCode: 409,
         message: 'Já existe outro motorista com o mesmo cpf',
       });
     }
-    await this.database.writeDriver(driver);
-    return driver;
+    driverToCreate.isBlocked = false; //Devemos retornar na criação?
+    await this.database.writeDriver(driverToCreate);
+    return driverToCreate;
   }
 
   public async searchByCpf(cpf: string): Promise<Driver> {
