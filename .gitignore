@@ -1,6 +1,7 @@
 # compiled output
 /dist
 /node_modules
+/teste.js
 
 # Logs
 logs
