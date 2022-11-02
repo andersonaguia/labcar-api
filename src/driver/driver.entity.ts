@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { IsCpfIsValid } from 'src/utils/isCpfIsValid.validator';
+import { IsLegalAge } from 'src/utils/isLegalAge.validator';
 
 export class Driver {
   @IsNotEmpty()
@@ -8,7 +9,8 @@ export class Driver {
   nome: string;
 
   @IsNotEmpty()
-  @IsString() //Criar decorator pra validar a idade do motorista
+  @IsString()
+  @IsLegalAge()
   dataNascimento: Date;
 
   @IsNotEmpty()
