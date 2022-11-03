@@ -8,6 +8,9 @@ import {
   Query,
   Param,
   Put,
+  Patch,
+  Delete,
+  HttpCode,
 } from '@nestjs/common';
 import { NestResponseBuilder } from 'src/core/http/nest-response-builder';
 import { Driver } from './driver.entity';
@@ -59,5 +62,21 @@ export class DriverController {
       .withHeaders({ Location: `drivers/${driverToUpdate.cpf}` })
       .withBody(driverToUpdate)
       .build();
+  }
+
+  @Patch(':cpf/block')
+  public async blockDriver(@Param('cpf') cpf: string): Promise<NestResponse> {
+    const driverBlocked = await this.service.blockDriver(cpf);
+    return new NestResponseBuilder()
+      .withStatus(HttpStatus.OK)
+      .withHeaders({ Location: `drivers/${driverBlocked.cpf}` })
+      .withBody(driverBlocked)
+      .build();
+  }
+
+  @Delete(':cpf')
+  @HttpCode(204)
+  public async destroyDriver(@Param('cpf') cpf: string) {
+    await this.service.destroyDriver(cpf);
   }
 }

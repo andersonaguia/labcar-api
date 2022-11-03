@@ -34,7 +34,6 @@ export class DriverService {
 
     if (driverExists) {
       const allDrivers = await this.database.getDrivers();
-      const driverIndex = allDrivers.indexOf(driverExists);
       const updatedDriver = allDrivers.map((drv) => {
         if (drv.cpf === cpf) {
           drv.nome = driverToUpdate.nome || drv.nome;
@@ -47,9 +46,25 @@ export class DriverService {
         }
         return drv;
       });
-      allDrivers[driverIndex] = updatedDriver[0];
-      await this.database.writeDrivers(allDrivers);
+      await this.database.writeDriver(updatedDriver[0]);
       return updatedDriver[0];
+    }
+  }
+
+  public async blockDriver(cpf: string) {
+    const drivers = await this.database.getDrivers();
+    const driverToBlock = drivers.find((drv) => drv.cpf === cpf);
+    if (driverToBlock) {
+      const driverIndex = drivers.indexOf(driverToBlock);
+      console.log(driverIndex);
+      drivers[driverIndex].isBlocked = !drivers[driverIndex].isBlocked;
+      await this.database.writeDrivers(drivers);
+      return driverToBlock;
+    } else {
+      throw new NotFoundException({
+        message: 'Driver is not found',
+        statusCode: HttpStatus.NOT_FOUND,
+      });
     }
   }
 
@@ -66,7 +81,7 @@ export class DriverService {
     }
   }
 
-  public async findDrivers(page, size, name) {
+  public async findDrivers(page: number, size: number, name: string) {
     const startPage = page < 1 ? 1 : page;
     const sizePage = size < 0 ? 1 : size;
     const driverName = name || '';
@@ -80,5 +95,20 @@ export class DriverService {
     }
 
     return drivers.slice((startPage - 1) * sizePage, startPage * sizePage);
+  }
+
+  public async destroyDriver(cpf: string) {
+    const drivers = await this.database.getDrivers();
+    const driverToDestroy = drivers.find((drv) => drv.cpf === cpf);
+    if (driverToDestroy) {
+      const driverIndex = drivers.indexOf(driverToDestroy);
+      drivers.splice(driverIndex, 1);
+      await this.database.writeDrivers(drivers);
+    } else {
+      throw new NotFoundException({
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'Driver is not found',
+      });
+    }
   }
 }
