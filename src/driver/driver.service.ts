@@ -28,6 +28,31 @@ export class DriverService {
     return driverToCreate;
   }
 
+  public async updateDriver(cpf: string, driver: Driver) {
+    const driverToUpdate = driver;
+    const driverExists = await this.searchByCpf(cpf);
+
+    if (driverExists) {
+      const allDrivers = await this.database.getDrivers();
+      const driverIndex = allDrivers.indexOf(driverExists);
+      const updatedDriver = allDrivers.map((drv) => {
+        if (drv.cpf === cpf) {
+          drv.nome = driverToUpdate.nome || drv.nome;
+          drv.dataNascimento =
+            driverToUpdate.dataNascimento || drv.dataNascimento;
+          drv.cpf = driverToUpdate.cpf || drv.cpf;
+          drv.placa = driverToUpdate.placa || drv.placa;
+          drv.modelo = driverToUpdate.modelo || drv.modelo;
+          drv.isBlocked = driverToUpdate.isBlocked || drv.isBlocked;
+        }
+        return drv;
+      });
+      allDrivers[driverIndex] = updatedDriver[0];
+      await this.database.writeDrivers(allDrivers);
+      return updatedDriver[0];
+    }
+  }
+
   public async searchByCpf(cpf: string): Promise<Driver> {
     const drivers = await this.database.getDrivers();
     const driver = drivers.find((driver) => driver.cpf === cpf);
@@ -36,7 +61,7 @@ export class DriverService {
     } else {
       throw new NotFoundException({
         statusCode: HttpStatus.NOT_FOUND,
-        message: 'Driver is not found',
+        message: 'Cpf is not found',
       });
     }
   }
