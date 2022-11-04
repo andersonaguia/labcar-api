@@ -1,18 +1,1 @@
-[
-  {
-    "nome": "Joaquim 2",
-    "dataNascimento": "2004-11-1",
-    "cpf": "12345678916",
-    "placa": "MNW-2004",
-    "modelo": "GM Vectra",
-    "isBlocked": false
-  },
-  {
-    "nome": "Zezinho da Feira",
-    "dataNascimento": "2004-11-1",
-    "cpf": "12345678911",
-    "placa": "MNW-2004",
-    "modelo": "GM Vectra",
-    "isBlocked": false
-  }
-]
+[{"name":"Fulano de Tal","birthDate":"2004-11-3","cpf":"04456590416","licensePlate":"MON-0001","vehicleModel":"GM Astra","isBlocked":false}]

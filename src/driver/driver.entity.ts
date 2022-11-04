@@ -6,25 +6,25 @@ export class Driver {
   @IsNotEmpty()
   @IsString()
   @MaxLength(50)
-  nome: string;
+  name: string;
 
   @IsNotEmpty()
   @IsString()
   @IsLegalAge()
-  dataNascimento: Date;
+  birthDate: Date;
 
   @IsNotEmpty()
   @IsString()
-  //@IsCpfIsValid()
+  @IsCpfIsValid()
   cpf: string;
 
   @IsNotEmpty()
-  @IsString()
-  placa: string;
+  @IsString()  
+  licensePlate: string;
 
   @IsNotEmpty()
   @IsString()
-  modelo: string;
+  vehicleModel: string;
 
   isBlocked: boolean;
 }

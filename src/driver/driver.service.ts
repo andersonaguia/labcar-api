@@ -70,7 +70,7 @@ export class DriverService {
 
     if (driverName) {
       const driverSearch = drivers.filter((driver) =>
-        driver.nome.toUpperCase().includes(driverName.toUpperCase()),
+        driver.name.toUpperCase().includes(driverName.toUpperCase()),
       );
       return driverSearch;
     }

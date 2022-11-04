@@ -55,7 +55,7 @@ export class DriverController {
     if (driverCreated) {
       return new NestResponseBuilder()
         .withStatus(HttpStatus.CREATED)
-        .withHeaders({ Location: `drivers/${driverCreated.nome}` })
+        .withHeaders({ Location: `drivers/${driverCreated.cpf}` })
         .withBody(driverCreated)
         .build();
     }

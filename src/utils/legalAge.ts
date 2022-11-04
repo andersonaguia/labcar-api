@@ -1,7 +1,7 @@
 export class LegalAge {
-  public birthDate(date: string) {
+  public birthDate(birthDate: string) {
     const today = new Date();
-    const userBirthDate = new Date(date);
+    const userBirthDate = new Date(birthDate);
 
     if (today.getFullYear() - userBirthDate.getFullYear() > 18) {
       return true;
@@ -14,5 +14,5 @@ export class LegalAge {
     } else {
       return false;
     }
-  }//ISO 8601
+  }
 }
