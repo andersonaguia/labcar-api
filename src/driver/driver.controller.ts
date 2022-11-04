@@ -11,6 +11,8 @@ import {
   Patch,
   Delete,
   HttpCode,
+  ConflictException,
+  NotFoundException,
 } from '@nestjs/common';
 import { NestResponseBuilder } from 'src/core/http/nest-response-builder';
 import { Driver } from './driver.entity';
@@ -34,21 +36,33 @@ export class DriverController {
     @Param('cpf') cpf: string,
   ): Promise<NestResponse> {
     const driver = await this.service.searchByCpf(cpf);
-    return new NestResponseBuilder()
-      .withStatus(HttpStatus.OK)
-      .withHeaders({ Location: `drivers/${driver.cpf}` })
-      .withBody(driver)
-      .build();
+    if (driver) {
+      return new NestResponseBuilder()
+        .withStatus(HttpStatus.OK)
+        .withHeaders({ Location: `drivers/${driver.cpf}` })
+        .withBody(driver)
+        .build();
+    }
+    throw new NotFoundException({
+      statusCode: HttpStatus.NOT_FOUND,
+      message: 'Cpf is not found',
+    });
   }
 
   @Post()
   public async createDriver(@Body() driver: Driver): Promise<NestResponse> {
     const driverCreated = await this.service.createDriver(driver);
-    return new NestResponseBuilder()
-      .withStatus(HttpStatus.CREATED)
-      .withHeaders({ Location: `drivers/${driverCreated.nome}` })
-      .withBody(driverCreated)
-      .build();
+    if (driverCreated) {
+      return new NestResponseBuilder()
+        .withStatus(HttpStatus.CREATED)
+        .withHeaders({ Location: `drivers/${driverCreated.nome}` })
+        .withBody(driverCreated)
+        .build();
+    }
+    throw new ConflictException({
+      statusCode: 409,
+      message: 'There is already a driver with the same cpf.',
+    });
   }
 
   @Put(':cpf')
@@ -57,26 +71,44 @@ export class DriverController {
     @Body() driver: Driver,
   ): Promise<NestResponse> {
     const driverToUpdate = await this.service.updateDriver(cpf, driver);
-    return new NestResponseBuilder()
-      .withStatus(HttpStatus.OK)
-      .withHeaders({ Location: `drivers/${driverToUpdate.cpf}` })
-      .withBody(driverToUpdate)
-      .build();
+    if (driverToUpdate) {
+      return new NestResponseBuilder()
+        .withStatus(HttpStatus.OK)
+        .withHeaders({ Location: `drivers/${driverToUpdate.cpf}` })
+        .withBody(driverToUpdate)
+        .build();
+    }
+    throw new NotFoundException({
+      statusCode: HttpStatus.NOT_FOUND,
+      message: 'Cpf is not found',
+    });
   }
 
   @Patch(':cpf/block')
   public async blockDriver(@Param('cpf') cpf: string): Promise<NestResponse> {
     const driverBlocked = await this.service.blockDriver(cpf);
-    return new NestResponseBuilder()
-      .withStatus(HttpStatus.OK)
-      .withHeaders({ Location: `drivers/${driverBlocked.cpf}` })
-      .withBody(driverBlocked)
-      .build();
+    if (driverBlocked) {
+      return new NestResponseBuilder()
+        .withStatus(HttpStatus.OK)
+        .withHeaders({ Location: `drivers/${driverBlocked.cpf}` })
+        .withBody(driverBlocked)
+        .build();
+    }
+    throw new NotFoundException({
+      statusCode: HttpStatus.NOT_FOUND,
+      message: 'Driver is not found',
+    });
   }
 
   @Delete(':cpf')
   @HttpCode(204)
   public async destroyDriver(@Param('cpf') cpf: string) {
-    await this.service.destroyDriver(cpf);
+    const driverToDestroy = await this.service.destroyDriver(cpf);
+    if (!driverToDestroy) {
+      throw new NotFoundException({
+        statusCode: HttpStatus.NOT_FOUND,
+        message: 'Driver is not found',
+      });
+    }
   }
 }

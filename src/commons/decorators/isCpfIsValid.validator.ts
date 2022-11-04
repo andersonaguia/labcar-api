@@ -6,7 +6,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { CpfIsValid } from './cpfIsValid';
+import { CpfIsValid } from '../../utils/cpfIsValid';
 
 @Injectable()
 @ValidatorConstraint()

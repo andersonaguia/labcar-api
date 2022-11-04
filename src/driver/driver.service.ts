@@ -1,9 +1,4 @@
-import {
-  ConflictException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Database } from 'src/database/drivers/drivers.database';
 import { Driver } from './driver.entity';
 
@@ -13,41 +8,34 @@ export class DriverService {
 
   public async createDriver(driver: Driver): Promise<Driver> {
     const driverToCreate = driver;
+    driverToCreate.cpf = driverToCreate.cpf.replace(/\D/g, '');
     const allDrivers = await this.database.getDrivers();
     const driverExist = allDrivers.find(
       (drv) => drv.cpf === driverToCreate.cpf,
     );
     if (driverExist) {
-      throw new ConflictException({
-        statusCode: 409,
-        message: 'Já existe outro motorista com o mesmo cpf',
-      });
+      return null;
     }
-    driverToCreate.isBlocked = false; //Devemos retornar na criação?
+    driverToCreate.isBlocked = false;
     await this.database.writeDriver(driverToCreate);
     return driverToCreate;
   }
 
   public async updateDriver(cpf: string, driver: Driver) {
-    const driverToUpdate = driver;
-    const driverExists = await this.searchByCpf(cpf);
-
-    if (driverExists) {
-      const allDrivers = await this.database.getDrivers();
-      const updatedDriver = allDrivers.map((drv) => {
-        if (drv.cpf === cpf) {
-          drv.nome = driverToUpdate.nome || drv.nome;
-          drv.dataNascimento =
-            driverToUpdate.dataNascimento || drv.dataNascimento;
-          drv.cpf = driverToUpdate.cpf || drv.cpf;
-          drv.placa = driverToUpdate.placa || drv.placa;
-          drv.modelo = driverToUpdate.modelo || drv.modelo;
-          drv.isBlocked = driverToUpdate.isBlocked || drv.isBlocked;
-        }
-        return drv;
-      });
-      await this.database.writeDriver(updatedDriver[0]);
-      return updatedDriver[0];
+    const allDrivers = await this.database.getDrivers();
+    const driverExists = allDrivers.find((drv) => drv.cpf === cpf);
+    const cpfIsEqual = driver.cpf === cpf;
+    const cpfExists = allDrivers.find((drv) => drv.cpf === driver.cpf);
+    if (!!driverExists && (!!cpfIsEqual || !cpfExists)) {
+      const driverIndex = allDrivers.indexOf(driverExists);
+      driver.isBlocked = driverExists.isBlocked;
+      allDrivers[driverIndex] = driver;
+      await this.database.writeDrivers(allDrivers);
+      return driver;
+    } else if (driverExists) {
+      return null;
+    } else {
+      return null;
     }
   }
 
@@ -56,15 +44,11 @@ export class DriverService {
     const driverToBlock = drivers.find((drv) => drv.cpf === cpf);
     if (driverToBlock) {
       const driverIndex = drivers.indexOf(driverToBlock);
-      console.log(driverIndex);
       drivers[driverIndex].isBlocked = !drivers[driverIndex].isBlocked;
       await this.database.writeDrivers(drivers);
       return driverToBlock;
     } else {
-      throw new NotFoundException({
-        message: 'Driver is not found',
-        statusCode: HttpStatus.NOT_FOUND,
-      });
+      return null;
     }
   }
 
@@ -74,10 +58,7 @@ export class DriverService {
     if (driver) {
       return driver;
     } else {
-      throw new NotFoundException({
-        statusCode: HttpStatus.NOT_FOUND,
-        message: 'Cpf is not found',
-      });
+      return null;
     }
   }
 
@@ -104,11 +85,9 @@ export class DriverService {
       const driverIndex = drivers.indexOf(driverToDestroy);
       drivers.splice(driverIndex, 1);
       await this.database.writeDrivers(drivers);
+      return driverToDestroy;
     } else {
-      throw new NotFoundException({
-        statusCode: HttpStatus.NOT_FOUND,
-        message: 'Driver is not found',
-      });
+      return null;
     }
   }
 }

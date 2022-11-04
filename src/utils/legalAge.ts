@@ -14,5 +14,5 @@ export class LegalAge {
     } else {
       return false;
     }
-  }
+  }//ISO 8601
 }

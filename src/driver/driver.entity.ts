@@ -1,6 +1,6 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
-import { IsCpfIsValid } from 'src/utils/isCpfIsValid.validator';
-import { IsLegalAge } from 'src/utils/isLegalAge.validator';
+import { IsNotEmpty, IsString, MaxLength, NotContains } from 'class-validator';
+import { IsCpfIsValid } from 'src/commons/decorators/isCpfIsValid.validator';
+import { IsLegalAge } from 'src/commons/decorators/isLegalAge.validator';
 
 export class Driver {
   @IsNotEmpty()
@@ -15,7 +15,7 @@ export class Driver {
 
   @IsNotEmpty()
   @IsString()
-  @IsCpfIsValid()
+  //@IsCpfIsValid()
   cpf: string;
 
   @IsNotEmpty()

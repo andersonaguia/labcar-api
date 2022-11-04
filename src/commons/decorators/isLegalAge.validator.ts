@@ -6,7 +6,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { LegalAge } from './legalAge';
+import { LegalAge } from '../../utils/legalAge';
 
 @Injectable()
 @ValidatorConstraint()
