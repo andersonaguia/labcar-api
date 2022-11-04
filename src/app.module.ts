@@ -7,9 +7,11 @@ import { DriverModule } from './driver/driver.module';
 import { CpfIsValid } from './utils/cpfIsValid';
 import { IsCpfIsValidConstraint } from './commons/decorators/isCpfIsValid.validator';
 import { LegalAge } from './utils/legalAge';
+import { PassengerModule } from './passenger/passenger.module';
+import { TravelModule } from './travel/travel.module';
 
 @Module({
-  imports: [DriverModule],
+  imports: [DriverModule, PassengerModule, TravelModule],
   controllers: [],
   providers: [
     Database,

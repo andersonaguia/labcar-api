@@ -1,8 +1,10 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsObject, IsString, MaxLength } from 'class-validator';
 import { IsCpfIsValid } from 'src/commons/decorators/isCpfIsValid.validator';
 import { IsLegalAge } from 'src/commons/decorators/isLegalAge.validator';
 
-export class Driver {
+export class Passenger {
+  id: string;
+
   @IsNotEmpty()
   @IsString()
   @MaxLength(50)
@@ -15,16 +17,18 @@ export class Driver {
 
   @IsNotEmpty()
   @IsString()
-  //@IsCpfIsValid()
+  @IsCpfIsValid()
   cpf: string;
 
   @IsNotEmpty()
-  @IsString()
-  placa: string;
-
-  @IsNotEmpty()
-  @IsString()
-  modelo: string;
-
-  isBlocked: boolean;
+  @IsObject()
+  address: {
+    zipCode: string;
+    street: string;
+    number: number;
+    city: string;
+    neighborhood: string;
+    complement: string;
+    state: string;
+  };
 }

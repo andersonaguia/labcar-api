@@ -1,0 +1,32 @@
+[
+  {
+    "nome": "João da Feira",
+    "dataNascimento": "2004-11-1",
+    "cpf": "04456590416",
+    "address": {
+      "zipCode": "58400000",
+      "street": "Rua JavaScript",
+      "number": 16,
+      "city": "Campina Grande",
+      "neighborhood": "Centro",
+      "complement": "",
+      "state": "PB"
+    },
+    "id": "a03d7f7e-6dfd-461d-8ce6-58ae62d8599a"
+  },
+  {
+    "nome": "Anderson Aguiar",
+    "dataNascimento": "2004-11-1",
+    "cpf": "06071097428",
+    "address": {
+      "zipCode": "58400000",
+      "street": "Rua JavaScript",
+      "number": 16,
+      "city": "Campina Grande",
+      "neighborhood": "Centro",
+      "complement": "",
+      "state": "PB"
+    },
+    "id": "c537c126-103b-4d45-996d-979d28b4990c"
+  }
+]
