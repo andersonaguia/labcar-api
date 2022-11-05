@@ -3,6 +3,7 @@ import { TravelStatus } from './travelSolicitations.enum';
 
 export class Travel {
   travelId: string;
+
   driverId: string;
 
   @IsNotEmpty()
@@ -16,6 +17,8 @@ export class Travel {
   @IsNotEmpty()
   @IsString()
   destination: string;
+
+  distance: number;
 
   travelStatus: TravelStatus;
 }

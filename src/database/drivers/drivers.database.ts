@@ -3,7 +3,7 @@ import { writeFile, readFile } from 'fs/promises';
 import { Driver } from 'src/driver/driver.entity';
 
 @Injectable()
-export class Database {
+export class DriverDatabase {
   private FILENAME = 'drivers.json';
 
   public async getDrivers(): Promise<Driver[]> {

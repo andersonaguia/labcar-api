@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Database } from 'src/database/drivers/drivers.database';
+import { DriverDatabase } from 'src/database/drivers/drivers.database';
 import { Driver } from './driver.entity';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class DriverService {
-  constructor(private database: Database) {}
+  constructor(private database: DriverDatabase) {}
 
   public async createDriver(driver: Driver): Promise<Driver> {
     const driverToCreate = driver;
@@ -63,7 +63,7 @@ export class DriverService {
     }
   }
 
-  public async searchByCpf(cpf: string): Promise<Driver> {
+  public async findByCpf(cpf: string): Promise<Driver> {
     const drivers = await this.database.getDrivers();
     const driver = drivers.find((driver) => driver.cpf === cpf);
     if (driver && !driver.isDeleted) {

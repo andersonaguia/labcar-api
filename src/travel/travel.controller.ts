@@ -19,12 +19,12 @@ export class TravelController {
   constructor(private service: TravelService) {}
 
   @Get()
-  public async findTravels(
+  public async findAllTravels(
     @Query('page') page = 1,
     @Query('size') size = 10,
     @Query('travelStatus') travelStatus,
   ) {
-    return await this.service.findTravels(page, size, travelStatus);
+    return await this.service.findAllTravels(page, size, travelStatus);
   }
 
   @Get(':id')
@@ -40,6 +40,27 @@ export class TravelController {
     throw new NotFoundException({
       statusCode: HttpStatus.NOT_FOUND,
       message: 'Id is not found',
+    });
+  }
+
+  @Get(':driverId/:location/travelNearby')
+  public async getNearbyTravels(
+    @Param('driverId') driverId: string,
+    @Param('location') location: number,
+  ): Promise<NestResponse> {
+    const nearbyTravels = await this.service.findNearbyTravels(
+      driverId,
+      location,
+    );
+    if (nearbyTravels) {
+      return new NestResponseBuilder()
+        .withStatus(HttpStatus.OK)
+        .withBody(nearbyTravels)
+        .build();
+    }
+    throw new NotFoundException({
+      statusCode: HttpStatus.NOT_FOUND,
+      message: 'No travels nearby',
     });
   }
 
@@ -59,13 +80,15 @@ export class TravelController {
     });
   }
 
-  @Patch(':travelId/:travelStatus/update')
+  @Patch()
   public async updateTravelStatus(
-    @Param('travelId') travelId: string,
-    @Param('travelStatus') travelStatus: number,
+    @Query('travelId') travelId: string,
+    @Query('driverId') driverId: string,
+    @Query('travelStatus') travelStatus: number,
   ): Promise<NestResponse> {
     const travelUpdated = await this.service.updateStatusTravel(
       travelId,
+      driverId,
       travelStatus,
     );
     if (travelUpdated) {

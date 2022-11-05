@@ -1,3 +1,4 @@
+import { DriverDatabase } from './../database/drivers/drivers.database';
 import { Injectable } from '@nestjs/common';
 import { TravelDatabase } from 'src/database/travels/travels.database';
 import { Travel } from './travel.entity';
@@ -10,6 +11,7 @@ export class TravelService {
   constructor(
     private travelDatabase: TravelDatabase,
     private database: Database,
+    private driverDatabase: DriverDatabase,
   ) {}
 
   public async createTravel(travel: Travel): Promise<Travel> {
@@ -33,6 +35,7 @@ export class TravelService {
     if (idExists && haveOpenTravels.length === 0) {
       travelToCreate.travelStatus = TravelStatus.CREATED;
       travelToCreate.travelId = uuidv4();
+      travel.distance = Math.floor(Math.random() * (10 - 1) + 1);
       await this.travelDatabase.writeTravel(travelToCreate);
       return travelToCreate;
     }
@@ -49,7 +52,11 @@ export class TravelService {
     }
   }
 
-  public async findTravels(page: number, size: number, travelStatus: number) {
+  public async findAllTravels(
+    page: number,
+    size: number,
+    travelStatus: number,
+  ) {
     const startPage = page < 1 ? 1 : page;
     const sizePage = size < 0 ? 1 : size;
     const trvStatus = travelStatus || '';
@@ -65,13 +72,39 @@ export class TravelService {
     return travels.slice((startPage - 1) * sizePage, startPage * sizePage);
   }
 
-  public async updateStatusTravel(travelId: string, travelStatus: number) {
+  public async findNearbyTravels(driverId: string, distance: number) {
+    const allDrivers = await this.driverDatabase.getDrivers();
+    const driverExist = allDrivers.find((driver) => driver.id === driverId);
+    if (driverExist) {
+      const allTravels = await this.travelDatabase.getTravels();
+      const nearbyTravels = allTravels.filter(
+        (travel) => travel.distance <= distance && !travel.driverId,
+      );
+      return nearbyTravels;
+    }
+    return null;
+  }
+
+  public async updateStatusTravel(
+    travelId: string,
+    driverId: string,
+    travelStatus: number,
+  ) {
+    const allDrivers = await this.driverDatabase.getDrivers();
+    const driverIsActive = allDrivers.find((driver) => {
+      if (driver.id === driverId && !driver.isBlocked && !driver.isDeleted) {
+        return driver;
+      }
+    });
     const allTravels = await this.travelDatabase.getTravels();
     const travelToUpdate = allTravels.find(
-      (travel) => travel.travelId === travelId,
+      (travel) =>
+        travel.travelId === travelId &&
+        (travel.travelStatus === TravelStatus.CREATED ||
+          travel.travelStatus === TravelStatus.ACCEPTED),
     );
 
-    if (travelToUpdate) {
+    if (travelToUpdate && driverIsActive) {
       const travelIndex = allTravels.indexOf(travelToUpdate);
       switch (travelStatus) {
         case 1:
@@ -86,7 +119,7 @@ export class TravelService {
         default:
           return null;
       }
-
+      travelToUpdate.driverId = driverIsActive.id;
       await this.travelDatabase.writeTravels(allTravels);
       return travelToUpdate;
     } else {

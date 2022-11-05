@@ -35,7 +35,7 @@ export class DriverController {
   public async getDriverByCpf(
     @Param('cpf') cpf: string,
   ): Promise<NestResponse> {
-    const driver = await this.service.searchByCpf(cpf);
+    const driver = await this.service.findByCpf(cpf);
     if (driver) {
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)
