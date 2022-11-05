@@ -3,6 +3,7 @@ import { TravelDatabase } from 'src/database/travels/travels.database';
 import { Travel } from './travel.entity';
 import { TravelStatus } from './travelSolicitations.enum';
 import { Database } from 'src/database/passengers/passengers.database';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class TravelService {
@@ -15,47 +16,32 @@ export class TravelService {
     const travelToCreate = travel;
     const allPassengers = await this.database.getPassengers();
     const idExists = allPassengers.find(
-      (pass) => pass.id === travelToCreate.id,
+      (pass) => pass.id === travelToCreate.passengerId,
     );
 
-    const alltravels = await this.travelDatabase.getTravels();
-    const travelExist = alltravels.filter(
-      (drv) => drv.id === travelToCreate.id,
+    const allTravels = await this.travelDatabase.getTravels();
+    const travelExists = allTravels.filter(
+      (travel) => travel.passengerId === travelToCreate.passengerId,
     );
-    const haveOpenTravels = travelExist.filter(
+
+    const haveOpenTravels = travelExists.filter(
       (travel) =>
         travel.travelStatus === TravelStatus.CREATED ||
         travel.travelStatus === TravelStatus.ACCEPTED,
     );
 
-    if (idExists && haveOpenTravels.length < 1) {
+    if (idExists && haveOpenTravels.length === 0) {
       travelToCreate.travelStatus = TravelStatus.CREATED;
+      travelToCreate.travelId = uuidv4();
       await this.travelDatabase.writeTravel(travelToCreate);
       return travelToCreate;
     }
     return null;
   }
 
-  public async updateTravel(id: string, travel: Travel) {
-    const allTravels = await this.travelDatabase.getTravels();
-    const travelExists = allTravels.find((pass) => pass.id === id);
-    const idIsEqual = travel.id === id;
-    const idExists = allTravels.find((pass) => pass.id === travel.id);
-    if (!!travelExists && (!!idIsEqual || !idExists)) {
-      const travelIndex = allTravels.indexOf(travelExists);
-      allTravels[travelIndex] = travel;
-      await this.travelDatabase.writeTravels(allTravels);
-      return travel;
-    } else if (travelExists) {
-      return null;
-    } else {
-      return null;
-    }
-  }
-
-  public async searchById(id: string): Promise<Travel> {
+  public async findTravelById(id: string): Promise<Travel> {
     const travels = await this.travelDatabase.getTravels();
-    const travel = travels.find((travel) => travel.id === id);
+    const travel = travels.find((travel) => travel.travelId === id);
     if (travel) {
       return travel;
     } else {
@@ -63,19 +49,47 @@ export class TravelService {
     }
   }
 
-  public async findTravels(page: number, size: number, name: string) {
+  public async findTravels(page: number, size: number, travelStatus: number) {
     const startPage = page < 1 ? 1 : page;
     const sizePage = size < 0 ? 1 : size;
-    const travelName = name || '';
+    const trvStatus = travelStatus || '';
     const travels = await this.travelDatabase.getTravels();
 
-    if (travelName) {
-      const travelSearch = travels.filter((travel) =>
-        travel.origin.toUpperCase().includes(travelName.toUpperCase()),
+    if (trvStatus) {
+      const travelSearch = travels.filter(
+        (travel) => travel.travelStatus == trvStatus,
       );
       return travelSearch;
     }
 
     return travels.slice((startPage - 1) * sizePage, startPage * sizePage);
+  }
+
+  public async updateStatusTravel(travelId: string, travelStatus: number) {
+    const allTravels = await this.travelDatabase.getTravels();
+    const travelToUpdate = allTravels.find(
+      (travel) => travel.travelId === travelId,
+    );
+    if (travelToUpdate) {
+      const travelIndex = allTravels.indexOf(travelToUpdate);
+      switch (travelStatus) {
+        case 1:
+          allTravels[travelIndex].travelStatus = TravelStatus.ACCEPTED;
+          break;
+        case 2:
+          allTravels[travelIndex].travelStatus = TravelStatus.REFUSED;
+          break;
+        case 3:
+          allTravels[travelIndex].travelStatus = TravelStatus.DONE;
+          break;
+        default:
+          return null;
+      }
+
+      await this.travelDatabase.writeTravels(allTravels);
+      return travelToUpdate;
+    } else {
+      return null;
+    }
   }
 }

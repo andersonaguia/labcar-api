@@ -4,7 +4,9 @@ import { TravelStatus } from './travelSolicitations.enum';
 export class Travel {
   @IsNotEmpty()
   @IsString()
-  id: string;
+  passengerId: string;
+
+  travelId: string;
 
   @IsNotEmpty()
   @IsString()

@@ -10,6 +10,7 @@ import {
   Put,
   ConflictException,
   NotFoundException,
+  Patch,
 } from '@nestjs/common';
 import { NestResponseBuilder } from 'src/core/http/nest-response-builder';
 import { Travel } from './travel.entity';
@@ -23,18 +24,18 @@ export class TravelController {
   public async findTravels(
     @Query('page') page = 1,
     @Query('size') size = 10,
-    @Query('name') name,
+    @Query('travelStatus') travelStatus,
   ) {
-    return await this.service.findTravels(page, size, name);
+    return await this.service.findTravels(page, size, travelStatus);
   }
 
   @Get(':id')
   public async getTravelById(@Param('id') id: string): Promise<NestResponse> {
-    const travel = await this.service.searchById(id);
+    const travel = await this.service.findTravelById(id);
     if (travel) {
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)
-        .withHeaders({ Location: `travels/${travel.id}` })
+        .withHeaders({ Location: `travels/${travel.travelId}` })
         .withBody(travel)
         .build();
     }
@@ -50,7 +51,7 @@ export class TravelController {
     if (travelCreated) {
       return new NestResponseBuilder()
         .withStatus(HttpStatus.CREATED)
-        .withHeaders({ Location: `travels/${travelCreated.id}` })
+        .withHeaders({ Location: `travels/${travelCreated.travelId}` })
         .withBody(travelCreated)
         .build();
     }
@@ -60,22 +61,25 @@ export class TravelController {
     });
   }
 
-  @Put(':id')
-  public async updateTravel(
-    @Param('id') id: string,
-    @Body() travel: Travel,
+  @Patch(':travelId/:travelStatus/update')
+  public async updateTravelStatus(
+    @Param('travelId') travelId: string,
+    @Param('travelStatus') travelStatus: number,
   ): Promise<NestResponse> {
-    const travelToUpdate = await this.service.updateTravel(id, travel);
-    if (travelToUpdate) {
+    const travelUpdated = await this.service.updateStatusTravel(
+      travelId,
+      travelStatus,
+    );
+    if (travelUpdated) {
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)
-        .withHeaders({ Location: `travels/${travelToUpdate.id}` })
-        .withBody(travelToUpdate)
+        .withHeaders({ Location: `drivers/${travelUpdated.travelId}` })
+        .withBody(travelUpdated)
         .build();
     }
     throw new NotFoundException({
       statusCode: HttpStatus.NOT_FOUND,
-      message: 'Id is not found',
+      message: 'Travel ID not found or invalid status',
     });
   }
 }
