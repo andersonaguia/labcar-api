@@ -3,7 +3,7 @@ import { writeFile, readFile } from 'fs/promises';
 import { Travel } from 'src/travel/travel.entity';
 
 @Injectable()
-export class Database {
+export class TravelDatabase {
   private FILENAME = 'travels.json';
 
   public async getTravels(): Promise<Travel[]> {

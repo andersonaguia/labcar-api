@@ -8,8 +8,6 @@ import {
   Query,
   Param,
   Put,
-  Delete,
-  HttpCode,
   ConflictException,
   NotFoundException,
 } from '@nestjs/common';
@@ -56,9 +54,9 @@ export class TravelController {
         .withBody(travelCreated)
         .build();
     }
-    throw new ConflictException({
-      statusCode: 409,
-      message: 'There is already a travel with the same id.',
+    throw new NotFoundException({
+      statusCode: HttpStatus.NOT_FOUND,
+      message: 'Operation not allowed.',
     });
   }
 
@@ -79,17 +77,5 @@ export class TravelController {
       statusCode: HttpStatus.NOT_FOUND,
       message: 'Id is not found',
     });
-  }
-
-  @Delete(':id')
-  @HttpCode(204)
-  public async destroyTravel(@Param('id') id: string) {
-    const travelToDestroy = await this.service.destroyTravel(id);
-    if (!travelToDestroy) {
-      throw new NotFoundException({
-        statusCode: HttpStatus.NOT_FOUND,
-        message: 'Travel is not found',
-      });
-    }
   }
 }

@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { Database } from 'src/database/travels/travels.database';
+import { TravelDatabase } from 'src/database/travels/travels.database';
 import { TravelController } from './travel.controller';
 import { TravelService } from './travel.service';
+import { Database } from 'src/database/passengers/passengers.database';
 
 @Module({
   controllers: [TravelController],
-  providers: [TravelService, Database],
+  providers: [TravelService, TravelDatabase, Database],
 })
 export class TravelModule {}

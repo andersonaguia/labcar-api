@@ -2,7 +2,7 @@ import { IsLegalAgeConstraint } from './commons/decorators/isLegalAge.validator'
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformResponseInterceptor } from './core/http/transform-response-interceptor';
-import { Database } from './database/drivers/drivers.database';
+//import { Database } from './database/drivers/drivers.database';
 import { DriverModule } from './driver/driver.module';
 import { CpfIsValid } from './utils/cpfIsValid';
 import { IsCpfIsValidConstraint } from './commons/decorators/isCpfIsValid.validator';
@@ -14,7 +14,7 @@ import { TravelModule } from './travel/travel.module';
   imports: [DriverModule, PassengerModule, TravelModule],
   controllers: [],
   providers: [
-    Database,
+    //Database,
     {
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,
