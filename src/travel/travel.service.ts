@@ -70,6 +70,7 @@ export class TravelService {
     const travelToUpdate = allTravels.find(
       (travel) => travel.travelId === travelId,
     );
+
     if (travelToUpdate) {
       const travelIndex = allTravels.indexOf(travelToUpdate);
       switch (travelStatus) {

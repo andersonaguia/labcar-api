@@ -1,8 +1,11 @@
+import { Exclude } from 'class-transformer';
 import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { IsCpfIsValid } from 'src/commons/decorators/isCpfIsValid.validator';
 import { IsLegalAge } from 'src/commons/decorators/isLegalAge.validator';
 
 export class Driver {
+  id: string;
+
   @IsNotEmpty()
   @IsString()
   @MaxLength(50)
@@ -19,12 +22,16 @@ export class Driver {
   cpf: string;
 
   @IsNotEmpty()
-  @IsString()  
+  @IsString()
   licensePlate: string;
 
   @IsNotEmpty()
   @IsString()
   vehicleModel: string;
 
+  @Exclude()
   isBlocked: boolean;
+
+  @Exclude()
+  isDeleted: boolean;
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Database } from 'src/database/drivers/drivers.database';
 import { Driver } from './driver.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class DriverService {
@@ -16,7 +17,9 @@ export class DriverService {
     if (driverExist) {
       return null;
     }
+    driverToCreate.isDeleted = false;
     driverToCreate.isBlocked = false;
+    driverToCreate.id = uuidv4();
     await this.database.writeDriver(driverToCreate);
     return driverToCreate;
   }
@@ -26,8 +29,15 @@ export class DriverService {
     const driverExists = allDrivers.find((drv) => drv.cpf === cpf);
     const cpfIsEqual = driver.cpf === cpf;
     const cpfExists = allDrivers.find((drv) => drv.cpf === driver.cpf);
-    if (!!driverExists && (!!cpfIsEqual || !cpfExists)) {
+    console.log('Driver Exists: ', !driverExists.isDeleted);
+    if (
+      !!driverExists &&
+      !driverExists.isDeleted &&
+      (!!cpfIsEqual || !cpfExists)
+    ) {
       const driverIndex = allDrivers.indexOf(driverExists);
+      driver.id = driverExists.id;
+      driver.isDeleted = driverExists.isDeleted;
       driver.isBlocked = driverExists.isBlocked;
       allDrivers[driverIndex] = driver;
       await this.database.writeDrivers(allDrivers);
@@ -42,10 +52,11 @@ export class DriverService {
   public async blockDriver(cpf: string) {
     const drivers = await this.database.getDrivers();
     const driverToBlock = drivers.find((drv) => drv.cpf === cpf);
-    if (driverToBlock) {
+    if (driverToBlock && !driverToBlock.isDeleted) {
       const driverIndex = drivers.indexOf(driverToBlock);
       drivers[driverIndex].isBlocked = !drivers[driverIndex].isBlocked;
       await this.database.writeDrivers(drivers);
+      delete driverToBlock.isDeleted;
       return driverToBlock;
     } else {
       return null;
@@ -55,7 +66,7 @@ export class DriverService {
   public async searchByCpf(cpf: string): Promise<Driver> {
     const drivers = await this.database.getDrivers();
     const driver = drivers.find((driver) => driver.cpf === cpf);
-    if (driver) {
+    if (driver && !driver.isDeleted) {
       return driver;
     } else {
       return null;
@@ -67,15 +78,21 @@ export class DriverService {
     const sizePage = size < 0 ? 1 : size;
     const driverName = name || '';
     const drivers = await this.database.getDrivers();
+    const activeDrivers = drivers.filter(
+      (driver) => driver.isDeleted === false,
+    );
 
     if (driverName) {
-      const driverSearch = drivers.filter((driver) =>
+      const driverSearch = activeDrivers.filter((driver) =>
         driver.name.toUpperCase().includes(driverName.toUpperCase()),
       );
       return driverSearch;
     }
 
-    return drivers.slice((startPage - 1) * sizePage, startPage * sizePage);
+    return activeDrivers.slice(
+      (startPage - 1) * sizePage,
+      startPage * sizePage,
+    );
   }
 
   public async destroyDriver(cpf: string) {

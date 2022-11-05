@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "name": "Cicrano de Talz",
+    "birthDate": "2004-11-3",
+    "cpf": "06071097428",
+    "licensePlate": "MON-0001",
+    "vehicleModel": "GM Astra",
+    "id": "fd7a03ea-b232-4397-a0d4-eea2488324f5",
+    "isDeleted": false,
+    "isBlocked": false
+  }
+]

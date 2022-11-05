@@ -2,11 +2,12 @@ import { IsNotEmpty, IsString } from 'class-validator';
 import { TravelStatus } from './travelSolicitations.enum';
 
 export class Travel {
+  travelId: string;
+  driverId: string;
+
   @IsNotEmpty()
   @IsString()
   passengerId: string;
-
-  travelId: string;
 
   @IsNotEmpty()
   @IsString()
