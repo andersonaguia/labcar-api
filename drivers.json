@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "name": "Cicrano",
+    "birthDate": "2004-11-3",
+    "cpf": "04456590416",
+    "licensePlate": "MON-0001",
+    "vehicleModel": "GM Astra",
+    "id": "3accf505-c074-45a3-a4ce-304a426a2fe6",
+    "isDeleted": false,
+    "isBlocked": false
+  },
+  {
+    "name": "Beltrano de Tal",
+    "birthDate": "2004-11-3",
+    "cpf": "06071097428",
+    "licensePlate": "MON-0001",
+    "vehicleModel": "GM Astra",
+    "isDeleted": false,
+    "isBlocked": false,
+    "id": "7fad7456-7fd9-44af-acc1-9e3c126c90cb"
+  }
+]

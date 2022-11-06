@@ -3,9 +3,9 @@
     "passengerId": "39694533-83ca-4f7e-b9bf-a3ed162c7ecd",
     "origin": "Rua Dois",
     "destination": "Rua mais fake ainda",
-    "travelStatus": 2,
+    "travelStatus": 3,
     "travelId": "24e7b7c9-fadc-4dd0-a8b3-e5ab6a572cc3",
-    "distance": 2,
-    "driverId": "925ecd54-3d04-437e-9547-263c024ff7d5"
+    "distance": 3,
+    "driverId": "7fad7456-7fd9-44af-acc1-9e3c126c90cb"
   }
 ]

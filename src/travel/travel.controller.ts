@@ -60,7 +60,7 @@ export class TravelController {
     }
     throw new NotFoundException({
       statusCode: HttpStatus.NOT_FOUND,
-      message: 'No travels nearby',
+      message: 'No travels nearby or driver does not exist',
     });
   }
 
@@ -94,7 +94,7 @@ export class TravelController {
     if (travelUpdated) {
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)
-        .withHeaders({ Location: `drivers/${travelUpdated.travelId}` })
+        .withHeaders({ Location: `travels/${travelUpdated.travelId}` })
         .withBody(travelUpdated)
         .build();
     }

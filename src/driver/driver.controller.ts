@@ -31,21 +31,21 @@ export class DriverController {
     return await this.service.findDrivers(page, size, name);
   }
 
-  @Get(':cpf')
+  @Get(':driverId')
   public async getDriverByCpf(
-    @Param('cpf') cpf: string,
+    @Param('driverId') driverId: string,
   ): Promise<NestResponse> {
-    const driver = await this.service.findByCpf(cpf);
+    const driver = await this.service.findDriverById(driverId);
     if (driver) {
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)
-        .withHeaders({ Location: `drivers/${driver.cpf}` })
+        .withHeaders({ Location: `drivers/${driver.id}` })
         .withBody(driver)
         .build();
     }
     throw new NotFoundException({
       statusCode: HttpStatus.NOT_FOUND,
-      message: 'Cpf is not found',
+      message: 'Id is not found',
     });
   }
 
@@ -84,13 +84,15 @@ export class DriverController {
     });
   }
 
-  @Patch(':cpf/block')
-  public async blockDriver(@Param('cpf') cpf: string): Promise<NestResponse> {
-    const driverBlocked = await this.service.blockDriver(cpf);
+  @Patch(':driverId/block')
+  public async blockDriver(
+    @Param('driverId') driverId: string,
+  ): Promise<NestResponse> {
+    const driverBlocked = await this.service.blockDriver(driverId);
     if (driverBlocked) {
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)
-        .withHeaders({ Location: `drivers/${driverBlocked.cpf}` })
+        .withHeaders({ Location: `drivers/${driverBlocked.id}` })
         .withBody(driverBlocked)
         .build();
     }

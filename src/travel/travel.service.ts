@@ -74,7 +74,10 @@ export class TravelService {
 
   public async findNearbyTravels(driverId: string, distance: number) {
     const allDrivers = await this.driverDatabase.getDrivers();
-    const driverExist = allDrivers.find((driver) => driver.id === driverId);
+    const driverExist = allDrivers.find(
+      (driver) =>
+        driver.id === driverId && !driver.isBlocked && !driver.isDeleted,
+    );
     if (driverExist) {
       const allTravels = await this.travelDatabase.getTravels();
       const nearbyTravels = allTravels.filter(
@@ -100,6 +103,7 @@ export class TravelService {
     const travelToUpdate = allTravels.find(
       (travel) =>
         travel.travelId === travelId &&
+        travel.driverId === driverId &&
         (travel.travelStatus === TravelStatus.CREATED ||
           travel.travelStatus === TravelStatus.ACCEPTED),
     );

@@ -52,10 +52,10 @@ export class DriverService {
     }
   }
 
-  public async blockDriver(cpf: string) {
+  public async blockDriver(driverId: string) {
     const drivers = await this.database.getDrivers();
     const driverToBlock = drivers.find(
-      (drv) => drv.cpf === cpf && !drv.isDeleted,
+      (drv) => drv.id === driverId && !drv.isDeleted,
     );
     if (driverToBlock) {
       const driverIndex = drivers.indexOf(driverToBlock);
@@ -68,10 +68,10 @@ export class DriverService {
     }
   }
 
-  public async findByCpf(cpf: string): Promise<Driver> {
+  public async findDriverById(driverId: string): Promise<Driver> {
     const drivers = await this.database.getDrivers();
     const driver = drivers.find(
-      (driver) => driver.cpf === cpf && !driver.isDeleted,
+      (driver) => driver.id === driverId && !driver.isDeleted,
     );
     if (driver) {
       delete driver.isDeleted;
