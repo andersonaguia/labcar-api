@@ -34,7 +34,7 @@ export class PassengerController {
   public async getPassengerByCpf(
     @Param('cpf') cpf: string,
   ): Promise<NestResponse> {
-    const passenger = await this.service.searchByCpf(cpf);
+    const passenger = await this.service.findPassengerByCpf(cpf);
     if (passenger) {
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)

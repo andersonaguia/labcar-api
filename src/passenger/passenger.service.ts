@@ -2,10 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { Database } from 'src/database/passengers/passengers.database';
 import { Passenger } from './passenger.entity';
 import { v4 as uuidv4 } from 'uuid';
+import { TravelDatabase } from 'src/database/travels/travels.database';
 
 @Injectable()
 export class PassengerService {
-  constructor(private database: Database) {}
+  constructor(
+    private database: Database,
+    private travelDatabase: TravelDatabase,
+  ) {}
 
   public async createPassenger(passenger: Passenger): Promise<Passenger> {
     const passengerToCreate = passenger;
@@ -18,17 +22,22 @@ export class PassengerService {
       return null;
     }
     passengerToCreate.id = uuidv4();
+    passengerToCreate.isDeleted = false;
     await this.database.writePassenger(passengerToCreate);
     return passengerToCreate;
   }
 
   public async updatePassenger(cpf: string, passenger: Passenger) {
     const allPassengers = await this.database.getPassengers();
-    const passengerExists = allPassengers.find((pass) => pass.cpf === cpf);
+    const passengerExists = allPassengers.find(
+      (pass) => pass.cpf === cpf && !pass.isDeleted,
+    );
     const cpfIsEqual = passenger.cpf === cpf;
     const cpfExists = allPassengers.find((pass) => pass.cpf === passenger.cpf);
     if (!!passengerExists && (!!cpfIsEqual || !cpfExists)) {
       const passengerIndex = allPassengers.indexOf(passengerExists);
+      passenger.isDeleted = allPassengers[passengerIndex].isDeleted;
+      passenger.id = allPassengers[passengerIndex].id;
       allPassengers[passengerIndex] = passenger;
       await this.database.writePassengers(allPassengers);
       return passenger;
@@ -39,10 +48,13 @@ export class PassengerService {
     }
   }
 
-  public async searchByCpf(cpf: string): Promise<Passenger> {
+  public async findPassengerByCpf(cpf: string): Promise<Passenger> {
     const passengers = await this.database.getPassengers();
-    const passenger = passengers.find((passenger) => passenger.cpf === cpf);
+    const passenger = passengers.find(
+      (passenger) => passenger.cpf === cpf && !passenger.isDeleted,
+    );
     if (passenger) {
+      delete passenger.isDeleted;
       return passenger;
     } else {
       return null;
@@ -56,22 +68,43 @@ export class PassengerService {
     const passengers = await this.database.getPassengers();
 
     if (passengerName) {
-      const passengerSearch = passengers.filter((passenger) =>
-        passenger.nome.toUpperCase().includes(passengerName.toUpperCase()),
+      const passengerSearch = passengers.filter(
+        (passenger) =>
+          passenger.nome.toUpperCase().includes(passengerName.toUpperCase()) &&
+          !passenger.isDeleted,
       );
+      passengerSearch.map((passenger) => delete passenger.isDeleted);
       return passengerSearch;
     }
-
-    return passengers.slice((startPage - 1) * sizePage, startPage * sizePage);
+    const activePassengers = passengers.filter(
+      (passenger) => !passenger.isDeleted,
+    );
+    activePassengers.map((passenger) => delete passenger.isDeleted);
+    return activePassengers.slice(
+      (startPage - 1) * sizePage,
+      startPage * sizePage,
+    );
   }
 
-  public async destroyPassenger(cpf: string) {
+  public async destroyPassenger(passengerId: string) {
     const passengers = await this.database.getPassengers();
-    const passengerToDestroy = passengers.find((drv) => drv.cpf === cpf);
+    const passengerToDestroy = passengers.find(
+      (passenger) => passenger.id === passengerId && !passenger.isDeleted,
+    );
+    const allTravels = await this.travelDatabase.getTravels();
+    const someTravel = allTravels.find(
+      (travel) => travel.passengerId === passengerId,
+    );
     if (passengerToDestroy) {
       const passengerIndex = passengers.indexOf(passengerToDestroy);
-      passengers.splice(passengerIndex, 1);
+      if (someTravel) {
+        passengers[passengerIndex].isDeleted = true;
+      } else {
+        passengers.splice(passengerIndex, 1);
+      }
+
       await this.database.writePassengers(passengers);
+      delete passengerToDestroy.isDeleted;
       return passengerToDestroy;
     } else {
       return null;

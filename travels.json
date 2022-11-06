@@ -1,53 +1,11 @@
 [
   {
-    "passengerId": "5c024a6e-696e-4d2a-812b-2c1cf5e92312",
+    "passengerId": "39694533-83ca-4f7e-b9bf-a3ed162c7ecd",
     "origin": "Rua Dois",
     "destination": "Rua mais fake ainda",
     "travelStatus": 2,
     "travelId": "24e7b7c9-fadc-4dd0-a8b3-e5ab6a572cc3",
     "distance": 2,
-    "driverId": "fd7a03ea-b232-4397-a0d4-eea2488324f5"
-  },
-  {
-    "passengerId": "5c024a6e-696e-4d2a-812b-2c1cf5e92313",
-    "origin": "Rua Fake",
-    "destination": "Rua mais fake ainda",
-    "travelStatus": 0,
-    "travelId": "24e7b7c9-fadc-4dd0-a8b3-e5ab6a572cc4",
-    "distance": 7
-  },
-  {
-    "passengerId": "5c024a6e-696e-4d2a-812b-2c1cf5e92314",
-    "origin": "Rua Fake",
-    "destination": "Rua mais fake ainda",
-    "travelStatus": 3,
-    "travelId": "24e7b7c9-fadc-4dd0-a8b3-e5ab6a572cc5",
-    "distance": 5,
-    "driverId": "fd7a03ea-b232-4397-a0d4-eea2488324f5"
-  },
-  {
-    "passengerId": "5c024a6e-696e-4d2a-812b-2c1cf5e92315",
-    "origin": "Rua Fake",
-    "destination": "Rua mais fake ainda",
-    "travelStatus": 0,
-    "travelId": "24e7b7c9-fadc-4dd0-a8b3-e5ab6a572cc6",
-    "distance": 3
-  },
-  {
-    "passengerId": "5c024a6e-696e-4d2a-812b-2c1cf5e92319",
-    "origin": "Rua Fake",
-    "destination": "Rua mais fake ainda",
-    "travelStatus": 0,
-    "travelId": "24e7b7c9-fadc-4dd0-a8b3-e5ab6a572cc8",
-    "distance": 6
-  },
-  {
-    "passengerId": "5c024a6e-696e-4d2a-812b-2c1cf5e92317",
-    "origin": "Rua Macarrão",
-    "destination": "Rua mais fake ainda",
-    "travelStatus": 3,
-    "travelId": "24e7b7c9-fadc-4dd0-a8b3-e5ab6a572cc0",
-    "distance": 7,
-    "driverId": "fd7a03ea-b232-4397-a0d4-eea2488324f5"
+    "driverId": "925ecd54-3d04-437e-9547-263c024ff7d5"
   }
 ]

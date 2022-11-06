@@ -18,7 +18,7 @@ export class TravelService {
     const travelToCreate = travel;
     const allPassengers = await this.database.getPassengers();
     const idExists = allPassengers.find(
-      (pass) => pass.id === travelToCreate.passengerId,
+      (pass) => pass.id === travelToCreate.passengerId && !pass.isDeleted,
     );
 
     const allTravels = await this.travelDatabase.getTravels();
