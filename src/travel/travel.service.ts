@@ -81,7 +81,10 @@ export class TravelService {
     if (driverExist) {
       const allTravels = await this.travelDatabase.getTravels();
       const nearbyTravels = allTravels.filter(
-        (travel) => travel.distance <= distance && !travel.driverId,
+        (travel) =>
+          travel.distance <= distance &&
+          !travel.driverId &&
+          !travel.travelStatus,
       );
       return nearbyTravels;
     }
@@ -103,25 +106,30 @@ export class TravelService {
     const travelToUpdate = allTravels.find(
       (travel) =>
         travel.travelId === travelId &&
-        travel.driverId === driverId &&
-        (travel.travelStatus === TravelStatus.CREATED ||
-          travel.travelStatus === TravelStatus.ACCEPTED),
+        (travel.driverId === driverId || !travel.driverId),
     );
 
     if (travelToUpdate && driverIsActive) {
       const travelIndex = allTravels.indexOf(travelToUpdate);
-      switch (travelStatus) {
-        case 1:
-          allTravels[travelIndex].travelStatus = TravelStatus.ACCEPTED;
-          break;
-        case 2:
-          allTravels[travelIndex].travelStatus = TravelStatus.REFUSED;
-          break;
-        case 3:
-          allTravels[travelIndex].travelStatus = TravelStatus.DONE;
-          break;
-        default:
-          return null;
+      if (travelStatus === 0) {
+        return null;
+      } else if (
+        travelStatus === 1 &&
+        travelToUpdate.travelStatus === TravelStatus.CREATED
+      ) {
+        allTravels[travelIndex].travelStatus = TravelStatus.ACCEPTED;
+      } else if (
+        travelStatus === 2 &&
+        travelToUpdate.travelStatus === TravelStatus.ACCEPTED
+      ) {
+        allTravels[travelIndex].travelStatus = TravelStatus.REFUSED;
+      } else if (
+        travelStatus === 3 &&
+        travelToUpdate.travelStatus === TravelStatus.ACCEPTED
+      ) {
+        allTravels[travelIndex].travelStatus = TravelStatus.DONE;
+      } else {
+        return null;
       }
       travelToUpdate.driverId = driverIsActive.id;
       await this.travelDatabase.writeTravels(allTravels);
