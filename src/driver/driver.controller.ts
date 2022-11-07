@@ -31,15 +31,15 @@ export class DriverController {
     return await this.service.findDrivers(page, size, name);
   }
 
-  @Get(':driverId')
+  @Get(':driverCpf')
   public async getDriverByCpf(
-    @Param('driverId') driverId: string,
+    @Param('driverCpf') driverCpf: string,
   ): Promise<NestResponse> {
-    const driver = await this.service.findDriverById(driverId);
+    const driver = await this.service.findDriverByCpf(driverCpf);
     if (driver) {
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)
-        .withHeaders({ Location: `drivers/${driver.id}` })
+        .withHeaders({ Location: `drivers/${driver.cpf}` })
         .withBody(driver)
         .build();
     }

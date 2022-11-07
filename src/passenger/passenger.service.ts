@@ -30,11 +30,11 @@ export class PassengerService {
   public async updatePassenger(cpf: string, passenger: Passenger) {
     const allPassengers = await this.database.getPassengers();
     const passengerExists = allPassengers.find(
-      (pass) => pass.cpf === cpf && !pass.isDeleted,
+      (pass) =>
+        pass.cpf === cpf && !pass.isDeleted && pass.cpf === passenger.cpf,
     );
-    const cpfIsEqual = passenger.cpf === cpf;
-    const cpfExists = allPassengers.find((pass) => pass.cpf === passenger.cpf);
-    if (!!passengerExists && (!!cpfIsEqual || !cpfExists)) {
+
+    if (!!passengerExists) {
       const passengerIndex = allPassengers.indexOf(passengerExists);
       passenger.isDeleted = allPassengers[passengerIndex].isDeleted;
       passenger.id = allPassengers[passengerIndex].id;

@@ -31,11 +31,14 @@ export class DriverService {
   public async updateDriver(cpf: string, driver: Driver) {
     const allDrivers = await this.database.getDrivers();
     const driverExists = allDrivers.find(
-      (drv) => drv.cpf === cpf && !drv.isDeleted,
+      (drv) =>
+        drv.cpf === cpf &&
+        !drv.isDeleted &&
+        drv.cpf === driver.cpf &&
+        !drv.isBlocked,
     );
-    const cpfIsEqual = driver.cpf === cpf;
-    const cpfExists = allDrivers.find((drv) => drv.cpf === driver.cpf);
-    if (!!driverExists && (!!cpfIsEqual || !cpfExists)) {
+
+    if (!!driverExists) {
       const driverIndex = allDrivers.indexOf(driverExists);
       driver.id = driverExists.id;
       driver.isDeleted = driverExists.isDeleted;
@@ -68,10 +71,10 @@ export class DriverService {
     }
   }
 
-  public async findDriverById(driverId: string): Promise<Driver> {
+  public async findDriverByCpf(driverCpf: string): Promise<Driver> {
     const drivers = await this.database.getDrivers();
     const driver = drivers.find(
-      (driver) => driver.id === driverId && !driver.isDeleted,
+      (driver) => driver.cpf === driverCpf && !driver.isDeleted,
     );
     if (driver) {
       delete driver.isDeleted;
