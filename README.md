@@ -39,18 +39,18 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 [Git](https://git-scm.com), [NodeJS](https://nodejs.org/en/), [NestJS](https://nestjs.com/)
 Além disto é bom ter um editor para trabalhar com o código como o [VSCode](https://code.visualstudio.com/)
 
-## Instalação do NestJS
-No terminal do seu computador digite npm i -g @nestjs/cli e aguarde finalizar a instalação
-
+#### Instalação do NestJS
+```bash
+npm i -g @nestjs/cli
+```
 #### 🎲 Rodando o Projeto
 
-# Clone este repositório
+Clone este repositório
 ```bash
 $ git clone https://github.com/andersonaguia/labcar-api.git
-```bash
+
 $ npm install
 
-```bash
 # development
 $ npm run start
 
