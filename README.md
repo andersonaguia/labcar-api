@@ -11,7 +11,7 @@
  <a href="#-sobre-o-projeto">Sobre</a> •
  <a href="#-funcionalidades">Funcionalidades</a> •
  <a href="#-como-executar-o-projeto">Como executar</a> • 
- <a href="#-acesse-a-documentação-via-swagger">Documentação</a> • 
+ <a href="#-documentação">Documentação</a> • 
  <a href="#-tecnologias">Tecnologias</a> • 
  <a href="#-autor">Autor</a> • 
  <a href="#user-content--licença">Licença</a>
@@ -70,7 +70,8 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## 🧭 Acesse a documentação via Swagger
+## 🧭 Documentação
+Após rodar o projeto clique no botão abaixo para acessar a documentação via swagger:
 
 # [![Swagger Badge](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white&link=[https://swagger.io/](http://localhost:3000/api))](http://localhost:3000/api)
 
