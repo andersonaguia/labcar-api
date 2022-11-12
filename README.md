@@ -88,6 +88,13 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 [![ExpressJS Badge](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white&link=https://expressjs.com/)](https://expressjs.com/)
 
+[![NpmJS Badge](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white&link=https://www.npmjs.com/)](https://www.npmjs.com/)
+
+[![Swagger Badge](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white&link=https://swagger.io/)](https://swagger.io/)
+	
+
+
+
 ## 🦸 Autor
  <b>Anderson Aguiar</b>🚀
  <br />
