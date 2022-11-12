@@ -71,9 +71,9 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 
-#### 🧭 Rodando a aplicação web (Frontend)
+#### 🧭 Acessando a documentação via Swagger
 
-# Execute o comando npm run dev para abrir o projeto no navegador
+# [![Swagger Badge](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white&link=https://swagger.io/)](http://localhost:3000/api)
 
 ```
 ---
