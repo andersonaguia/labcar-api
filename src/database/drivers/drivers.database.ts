@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { writeFile, readFile } from 'fs/promises';
 import { Driver } from 'src/driver/driver.entity';
+import { writeFile , readFile} from 'fs/promises';
 
 @Injectable()
 export class DriverDatabase {

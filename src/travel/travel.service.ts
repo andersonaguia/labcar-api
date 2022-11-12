@@ -72,7 +72,7 @@ export class TravelService {
     return travels.slice((startPage - 1) * sizePage, startPage * sizePage);
   }
 
-  public async findNearbyTravels(driverId: string, distance: number) {
+  public async findNearbyTravels(driverId: string, travelDistance: number) {
     const allDrivers = await this.driverDatabase.getDrivers();
     const driverExist = allDrivers.find(
       (driver) =>
@@ -82,7 +82,7 @@ export class TravelService {
       const allTravels = await this.travelDatabase.getTravels();
       const nearbyTravels = allTravels.filter(
         (travel) =>
-          travel.distance <= distance &&
+          travel.distance <= travelDistance &&
           !travel.driverId &&
           !travel.travelStatus,
       );

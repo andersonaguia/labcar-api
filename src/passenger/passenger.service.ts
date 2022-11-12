@@ -3,6 +3,7 @@ import { Database } from 'src/database/passengers/passengers.database';
 import { Passenger } from './passenger.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { TravelDatabase } from 'src/database/travels/travels.database';
+import { TravelStatus } from 'src/travel/travelSolicitations.enum';
 
 @Injectable()
 export class PassengerService {
@@ -92,10 +93,11 @@ export class PassengerService {
       (passenger) => passenger.id === passengerId && !passenger.isDeleted,
     );
     const allTravels = await this.travelDatabase.getTravels();
-    const someTravel = allTravels.find(
+    const someTravel = allTravels.filter(
       (travel) => travel.passengerId === passengerId,
     );
-    if (passengerToDestroy) {
+    const travelInProgress = someTravel.find(travel => travel.travelStatus === TravelStatus.CREATED || travel.travelStatus === TravelStatus.ACCEPTED);
+    if (passengerToDestroy && !travelInProgress) {
       const passengerIndex = passengers.indexOf(passengerToDestroy);
       if (someTravel) {
         passengers[passengerIndex].isDeleted = true;

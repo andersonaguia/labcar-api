@@ -16,12 +16,34 @@ import {
 import { NestResponseBuilder } from 'src/core/http/nest-response-builder';
 import { Passenger } from './passenger.entity';
 import { PassengerService } from './passenger.service';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Passengers')
 @Controller('passengers')
 export class PassengerController {
   constructor(private service: PassengerService) {}
 
   @Get()
+  @ApiOperation({summary: "Find all passengers"})
+  @ApiQuery({
+    name: 'name',
+    required: false,
+    type: String,
+  })  
+  @ApiQuery({
+    name: 'size',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Operação realizada com sucesso.'
+  })
   public async findPassengers(
     @Query('page') page = 1,
     @Query('size') size = 10,
@@ -30,11 +52,20 @@ export class PassengerController {
     return await this.service.findPassengers(page, size, name);
   }
 
-  @Get(':cpf')
+  @Get(':passengerCpf')
+  @ApiOperation({summary: "Get Passenger by CPF"})
+  @ApiResponse({
+    status: 200,
+    description: 'Busca bem sucedida.'
+  }) 
+  @ApiResponse({
+    status: 404,
+    description: 'CPF informado não foi encontrado no banco de dados.'
+  }) 
   public async getPassengerByCpf(
-    @Param('cpf') cpf: string,
+    @Param('passengerCpf') passengerCpf: string,
   ): Promise<NestResponse> {
-    const passenger = await this.service.findPassengerByCpf(cpf);
+    const passenger = await this.service.findPassengerByCpf(passengerCpf);
     if (passenger) {
       return new NestResponseBuilder()
         .withStatus(HttpStatus.OK)
@@ -49,6 +80,19 @@ export class PassengerController {
   }
 
   @Post()
+  @ApiOperation({summary: "Create Passenger"})
+  @ApiResponse({
+    status: 201,
+    description: 'Passageiro criado com sucesso.'
+  }) 
+  @ApiResponse({
+    status: 400,
+    description: 'Dados informados no body estão incorretos para essa operação.'
+  }) 
+  @ApiResponse({
+    status: 409,
+    description: 'Já existe um passageiro com o mesmo CPF.'
+  }) 
   public async createPassenger(
     @Body() passenger: Passenger,
   ): Promise<NestResponse> {
@@ -66,13 +110,26 @@ export class PassengerController {
     });
   }
 
-  @Put(':cpf')
+  @Put(':passengerCpf')
+  @ApiOperation({summary: "Update Passenger"}) 
+  @ApiResponse({
+    status: 400,
+    description: 'Dados informados no body estão incorretos.'
+  }) 
+  @ApiResponse({
+    status: 404,
+    description: 'CPF não foi encontrado no banco de dados.'
+  }) 
+  @ApiResponse({
+    status: 200,
+    description: 'Operação bem sucedida.'
+  }) 
   public async updatePassenger(
-    @Param('cpf') cpf: string,
+    @Param('passengerCpf') passengerCpf: string,
     @Body() passenger: Passenger,
   ): Promise<NestResponse> {
     const passengerToUpdate = await this.service.updatePassenger(
-      cpf,
+      passengerCpf,
       passenger,
     );
     if (passengerToUpdate) {
@@ -88,14 +145,23 @@ export class PassengerController {
     });
   }
 
-  @Delete(':cpf')
+  @Delete(':passengerId')
   @HttpCode(204)
-  public async destroyPassenger(@Param('cpf') cpf: string) {
-    const passengerToDestroy = await this.service.destroyPassenger(cpf);
+  @ApiOperation({summary: "Delete Passenger"}) 
+  @ApiResponse({
+    status: 204,
+    description: 'Passageiro excluído com sucesso.'
+  }) 
+  @ApiResponse({
+    status: 404,
+    description: 'Passageiro não encontrado ou com viagem em aberto.'
+  })
+  public async destroyPassenger(@Param('passengerId') passengerId: string) {
+    const passengerToDestroy = await this.service.destroyPassenger(passengerId);
     if (!passengerToDestroy) {
       throw new NotFoundException({
         statusCode: HttpStatus.NOT_FOUND,
-        message: 'Passenger is not found',
+        message: 'Passenger is not found or travel in progress.',
       });
     }
   }

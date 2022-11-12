@@ -3,6 +3,7 @@ import { DriverDatabase } from 'src/database/drivers/drivers.database';
 import { Driver } from './driver.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { TravelDatabase } from 'src/database/travels/travels.database';
+import { TravelStatus } from 'src/travel/travelSolicitations.enum';
 
 @Injectable()
 export class DriverService {
@@ -60,7 +61,13 @@ export class DriverService {
     const driverToBlock = drivers.find(
       (drv) => drv.id === driverId && !drv.isDeleted,
     );
-    if (driverToBlock) {
+    const allTravels = await this.travelDatabase.getTravels();
+    const someTravel = allTravels.filter(
+      (travel) => travel.driverId === driverId,
+    );
+    const travelInProgress = someTravel.find(travel => travel.travelStatus === TravelStatus.ACCEPTED);
+
+    if (driverToBlock && !travelInProgress) {
       const driverIndex = drivers.indexOf(driverToBlock);
       drivers[driverIndex].isBlocked = !drivers[driverIndex].isBlocked;
       await this.database.writeDrivers(drivers);
@@ -111,10 +118,12 @@ export class DriverService {
       (driver) => driver.id === driverId && !driver.isDeleted,
     );
     const allTravels = await this.travelDatabase.getTravels();
-    const someTravel = allTravels.find(
+    const someTravel = allTravels.filter(
       (travel) => travel.driverId === driverId,
     );
-    if (driverToDestroy) {
+    const travelInProgress = someTravel.find(travel => travel.travelStatus === TravelStatus.ACCEPTED);
+
+    if (driverToDestroy && !travelInProgress) {
       const driverIndex = allDrivers.indexOf(driverToDestroy);
       if (someTravel) {
         allDrivers[driverIndex].isDeleted = true;
