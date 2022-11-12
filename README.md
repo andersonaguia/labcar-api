@@ -5,7 +5,7 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-<p align="center">LabCar API</p>
+# <p align="center">LabCar API</p>
 
 <p align="center">
  <a href="#-sobre-o-projeto">Sobre</a> •
@@ -48,11 +48,11 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 [Git](https://git-scm.com), [NodeJS](https://nodejs.org/en/), [NestJS](https://nestjs.com/)
 Além disto é bom ter um editor para trabalhar com o código como o [VSCode](https://code.visualstudio.com/)
 
-#### Instalação do NestJS
+### Instalação do NestJS
 ```bash
 npm i -g @nestjs/cli
 ```
-#### 🎲 Rodando o Projeto
+### 🎲 Rodando o Projeto
 
 ```bash
 $ git clone https://github.com/andersonaguia/labcar-api.git
@@ -68,7 +68,7 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
-## Test
+### Teste
 
 ```bash
 # unit tests
@@ -84,7 +84,6 @@ $ npm run test:cov
 ## 🧭 Acesse a documentação via Swagger
 
 # [![Swagger Badge](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white&link=[https://swagger.io/](http://localhost:3000/api))](http://localhost:3000/api)
-
 
 ---
 
