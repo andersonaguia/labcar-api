@@ -45,7 +45,6 @@ npm i -g @nestjs/cli
 ```
 #### 🎲 Rodando o Projeto
 
-Clone este repositório
 ```bash
 $ git clone https://github.com/andersonaguia/labcar-api.git
 
@@ -78,7 +77,7 @@ $ npm run test:cov
 
 ```
 ---
-```
+
 ## 🛠 Tecnologias
 
 As seguintes ferramentas foram usadas na construção do projeto:
