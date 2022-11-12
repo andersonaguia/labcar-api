@@ -5,8 +5,8 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">LabCar API</p>
-    <p align="center">
+<p align="center">LabCar API</p>
+
 ## 💻 Sobre o projeto
 
 [LabCar](https://github.com/andersonaguia/labcar-api) é uma API de administração para gerenciamento de viagens. Através dos endpoints podemos controlar quem são os motoristas, passageiros e as viagens realizadas.
@@ -20,7 +20,7 @@ Antes de começar, você vai precisar ter instalado em sua máquina as seguintes
 Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/)
 
 ## Instalação do NestJS
-# No terminal do seu computador digite npm i -g @nestjs/cli e aguarde finalizar a instalação
+No terminal do seu computador digite npm i -g @nestjs/cli e aguarde finalizar a instalação
 
 #### 🎲 Rodando o Projeto
 
