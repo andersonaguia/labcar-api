@@ -72,7 +72,7 @@ $ npm run test:e2e
 $ npm run test:cov
 
 ```
-#### 🧭 Acesse a documentação via Swagger clicando no badge
+## 🧭 Acesse a documentação via Swagger
 
 # [![Swagger Badge](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white&link=[https://swagger.io/](http://localhost:3000/api))](http://localhost:3000/api)
 
