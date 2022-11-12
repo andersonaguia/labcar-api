@@ -80,7 +80,7 @@ $ npm run test:cov
 
 ## 🛠 Tecnologias
 
-[![NestJS Badge](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white&width=200px&link=https://nodejs.org/en/)](https://nodejs.org/en/)
+[![NestJS Badge](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white&link=https://nodejs.org/en/)](https://nodejs.org/en/)
 
 [![TypeScript Badge](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white&link=https://www.typescriptlang.org/)](https://www.typescriptlang.org/)	
 
@@ -100,7 +100,7 @@ https://img.shields.io/badge/Insomnia-5849be?style=for-the-badge&logo=Insomnia&l
 ## 🦸 Autor
  <b>Anderson Aguiar</b>🚀
  <br />
-[![Linkedin Badge](https://img.shields.io/badge/-Anderson-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/andersonlaguiar/)](https://www.linkedin.com/in/andersonlaguiar/) 
+[![Linkedin Badge](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white&link=https://www.linkedin.com/in/andersonlaguiar/)](https://www.linkedin.com/in/andersonlaguiar/) 
 
 ---
 
