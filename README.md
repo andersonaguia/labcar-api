@@ -11,13 +11,33 @@
 
 [LabCar](https://github.com/andersonaguia/labcar-api) é uma API de administração para gerenciamento de viagens. Através dos endpoints podemos controlar quem são os motoristas, passageiros e as viagens realizadas.
 
+## ⚙️ Funcionalidades
+
+- [x] Cadastrar motoristas
+- [x] Realizar busca de forma paginada ou por parte do nome do motorista
+- [x] Realizar busca pelo cpf do motorista
+- [x] Editar dados do motorista
+- [x] Bloquear/Desbloquear motorista
+- [x] Deletar motorista
+- [x] Cadastrar passageiros
+- [x] Realizar busca de forma paginada ou por parte do nome do passageiro
+- [x] Realizar busca pelo cpf do passageiro
+- [x] Editar dados do passageiro
+- [x] Deletar passageiro
+- [x] Cadastrar nova viagem
+- [x] Realizar busca de forma paginada e pelo status da viagem
+- [x] Realizar busca pelo id da viagem
+- [x] Realizar busca das viagens próximas
+- [x] Atualizar status de uma viagem
+---
+
 ## 🚀 Como executar o projeto
 
 ### Pré-requisitos
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 [Git](https://git-scm.com), [NodeJS](https://nodejs.org/en/), [NestJS](https://nestjs.com/)
-Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/)
+Além disto é bom ter um editor para trabalhar com o código como o [VSCode](https://code.visualstudio.com/)
 
 ## Instalação do NestJS
 No terminal do seu computador digite npm i -g @nestjs/cli e aguarde finalizar a instalação
