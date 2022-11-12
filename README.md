@@ -7,6 +7,16 @@
 
 <p align="center">LabCar API</p>
 
+<p align="center">
+ <a href="#-sobre-o-projeto">Sobre</a> •
+ <a href="#-funcionalidades">Funcionalidades</a> •
+ <a href="#-layout">Layout</a> • 
+ <a href="#-como-executar-o-projeto">Como executar</a> • 
+ <a href="#-tecnologias">Tecnologias</a> • 
+ <a href="#-autor">Autor</a> • 
+ <a href="#user-content--licença">Licença</a>
+</p>
+
 ## 💻 Sobre o projeto
 
 [LabCar](https://github.com/andersonaguia/labcar-api) é uma API de administração para gerenciamento de viagens. Através dos endpoints podemos controlar quem são os motoristas, passageiros e as viagens realizadas.
