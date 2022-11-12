@@ -82,6 +82,8 @@ $ npm run test:cov
 
 As seguintes ferramentas foram usadas na construção do projeto:
 
+[![NestJS Badge]([https://img.shields.io/badge/-Anderson-blue?style=flat-square&logo=Linkedin&logoColor=white](https://img.shields.io/badge/nestjs-E0234E?style=for-the-badge&logo=nestjs&logoColor=white&link=https://nestjs.com/)](https://nestjs.com/) 
+
 -   **[NestJS](https://nestjs.com/)**
 
 ## 🦸 Autor
